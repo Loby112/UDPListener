@@ -15,14 +15,26 @@ namespace UDPListener {
             Console.WriteLine("Goddag");
             using (UdpClient socket = new UdpClient()){
                 socket.Client.Bind(new IPEndPoint(IPAddress.Any, 7005));
-
+                var oldDistance = 17.5;
                 using (HttpClient client = new HttpClient()){
                     while (true){
                         IPEndPoint from = null;
                         byte[] data = socket.Receive(ref from);
                         string received = Encoding.UTF8.GetString(data);
+                        Console.WriteLine(data);
                         mail.UnixTimeStamp = 0;
                         mail.Id = 0;
+                        var convertReceived = double.Parse(received);
+
+                        if (oldDistance - convertReceived > 0.5){
+                            mail.Detected = "yes";
+                            oldDistance = convertReceived;
+                        }
+                        else if(Math.Abs(oldDistance - 17.5) > 0.5){
+                            oldDistance = 17.5;
+                            mail.Detected = "no";
+                        }
+
                         mail.Detected = received;
 
                         string serializedData = JsonSerializer.Serialize(mail);
