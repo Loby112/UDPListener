@@ -15,7 +15,7 @@ namespace UDPListener {
             Console.WriteLine("Goddag");
             using (UdpClient socket = new UdpClient()){
                 socket.Client.Bind(new IPEndPoint(IPAddress.Any, 7005));
-                var oldDistance = 17.5;
+                var oldDistance = 41.7;
                 using (HttpClient client = new HttpClient()){
                     while (true){
                         IPEndPoint from = null;
@@ -33,8 +33,8 @@ namespace UDPListener {
                             mail.Detected = "yes";
                             oldDistance = convertReceived;
                         }
-                        else if(Math.Abs(convertReceived - 17.5) < 0.5){
-                            oldDistance = 17.5;
+                        else if(Math.Abs(convertReceived - 41.7) < 0.5){
+                            oldDistance = 41.7;
                             mail.Detected = "no";
                         }
                         else{
