@@ -21,21 +21,27 @@ namespace UDPListener {
                         IPEndPoint from = null;
                         byte[] data = socket.Receive(ref from);
                         string received = Encoding.UTF8.GetString(data);
-                        Console.WriteLine(data);
+                        Console.WriteLine(received);
+                        
                         mail.UnixTimeStamp = 0;
                         mail.Id = 0;
-                        var convertReceived = double.Parse(received);
+                        var convertReceived = double.Parse(received, System.Globalization.CultureInfo.InvariantCulture);
+                        //Console.WriteLine(convertReceived);
 
+                        
                         if (oldDistance - convertReceived > 0.5){
                             mail.Detected = "yes";
                             oldDistance = convertReceived;
                         }
-                        else if(Math.Abs(oldDistance - 17.5) > 0.5){
+                        else if(Math.Abs(convertReceived - 17.5) < 0.5){
                             oldDistance = 17.5;
                             mail.Detected = "no";
                         }
+                        else{
+                            mail.Detected = "same reading";
+                        }
 
-                        mail.Detected = received;
+                        Console.WriteLine(mail.Detected);
 
                         string serializedData = JsonSerializer.Serialize(mail);
                         Console.WriteLine("Server received " + received + " From " + from.Address);
