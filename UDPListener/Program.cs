@@ -9,13 +9,13 @@ using UDPListener.Models;
 
 namespace UDPListener {
     internal class Program{
-        private static string URL = "https://yougotmailapi.azurewebsites.net/api/Mail";
+        private static string URL = "https://yougotmailv2.azurewebsites.net/api/Mail";
         private static Mail mail = new Mail();
         static void Main(string[] args) {
             Console.WriteLine("Goddag");
             using (UdpClient socket = new UdpClient()){
                 socket.Client.Bind(new IPEndPoint(IPAddress.Any, 7005));
-                var oldDistance = 41.7;
+                var oldDistance = 41.8;
                 using (HttpClient client = new HttpClient()){
                     while (true){
                         IPEndPoint from = null;
@@ -33,8 +33,8 @@ namespace UDPListener {
                             mail.Detected = "yes";
                             oldDistance = convertReceived;
                         }
-                        else if(Math.Abs(convertReceived - 41.7) < 0.5){
-                            oldDistance = 41.7;
+                        else if(Math.Abs(convertReceived - 41.8) < 0.5){
+                            oldDistance = 41.8;
                             mail.Detected = "no";
                         }
                         else{
